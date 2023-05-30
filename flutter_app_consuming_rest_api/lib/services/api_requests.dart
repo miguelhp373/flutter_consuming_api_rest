@@ -1,16 +1,74 @@
-import 'package:dio/dio.dart';
-//only local host tests on chrome with api localhost don't https ssl
-//flutter run -d chrome --web-browser-flag "--disable-web-security"
+// ignore_for_file: avoid_print
+
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiRequest {
-  final _basePathURL = 'http://192.168.15.71:3000';
+  ///////////////////////////////////////////
+  final _basePathURL = dotenv.get('API_URL');
+  ///////////////////////////////////////////
 
-  Future<Response<dynamic>> fetchData(String pathName) async {
+  Future<http.Response> fetchData(String pathName) async {
+    //////////////////////////////////////
+
+    var headerStrings = {
+      "Access-Control-Allow-Origin": "*",
+      'Content-Type': 'application/json',
+      'Accept': '*/*'
+    };
+    //////////////////////////////////////
+
     try {
-      final dio = Dio();
-      dio.options.validateStatus = (status) => true;
-      print(dio.get(_basePathURL + pathName));
-      return await dio.get(_basePathURL + pathName);
+      final url = Uri.parse(_basePathURL + pathName);
+      final response = await http.get(url, headers: headerStrings);
+
+      return response;
+    } catch (e) {
+      print('API Error: $e');
+      throw Exception('400 Bad Request');
+    }
+  }
+
+  Future<http.Response> fetchDataByUserID(String pathName) async {
+    //////////////////////////////////////
+
+    var headerStrings = {
+      "Access-Control-Allow-Origin": "*",
+      'Content-Type': 'application/json',
+      'Accept': '*/*'
+    };
+    //////////////////////////////////////
+
+    try {
+      final url = Uri.parse(_basePathURL + pathName);
+      final response = await http.get(url, headers: headerStrings);
+
+      return response;
+    } catch (e) {
+      print('API Error: $e');
+      throw Exception('400 Bad Request');
+    }
+  }
+
+  Future<http.Response> patchDataByUserID(
+      String pathName, Map<String, dynamic> data) async {
+    //////////////////////////////////////
+
+    var headerStrings = {
+      "Access-Control-Allow-Origin": "*",
+      'Content-Type': 'application/json',
+      'Accept': '*/*'
+    };
+    //////////////////////////////////////
+
+    try {
+      final url = Uri.parse(_basePathURL + pathName);
+      final response =
+          await http.patch(url, headers: headerStrings, body: jsonEncode(data));
+
+      return response;
     } catch (e) {
       print('API Error: $e');
       throw Exception('400 Bad Request');

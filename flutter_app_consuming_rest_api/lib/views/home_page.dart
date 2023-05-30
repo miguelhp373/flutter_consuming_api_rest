@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_consuming_rest_api/components/dashboard_cards.dart';
 import 'package:flutter_app_consuming_rest_api/components/users_listview.dart';
@@ -46,8 +48,8 @@ class _HomePageState extends State<HomePage>
           SingleChildScrollView(
             child: Container(
               color: const Color(0xFFFFFFFF),
-              child: Column(
-                children: const [
+              child: const Column(
+                children: [
                   SizedBox(height: 10),
                   DashboardCards(
                     titleCardText: "Total Users",
@@ -57,7 +59,7 @@ class _HomePageState extends State<HomePage>
               ),
             ),
           ),
-          UsersListview(),
+          const UsersListview(),
         ],
       ),
     );
