@@ -1,6 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app_consuming_rest_api/components/show_modal_boolean.dart';
 import 'package:flutter_app_consuming_rest_api/services/api_requests.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -25,6 +28,29 @@ class _UsersListviewState extends State<UsersListview> {
     setState(() {
       _userDataFuture = ApiRequest().fetchData('/users/all');
     });
+  }
+
+  void _deleteUserRequestAPI(String userId) async {
+    Completer<bool> completer = Completer<bool>();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ShowModalBoolean(
+          completer: completer,
+          isTitleModal: "Do you really want to delete the user",
+          isMessageModal: "Delete user?",
+        );
+      },
+    );
+
+    bool? result = await completer.future;
+
+    if (result) {
+      ApiRequest()
+          .deleteUserByID("/users/$userId")
+          .then((value) => {if (value.statusCode == 200) _refreshData()});
+    }
   }
 
   @override
@@ -66,14 +92,23 @@ class _UsersListviewState extends State<UsersListview> {
                             backgroundImage: NetworkImage(user['image_link']),
                           ),
                           title: Text(user['name']),
-                          //subtitle: Text(user['email']),
+                          trailing: IconButton(
+                            onPressed: () {
+                              _deleteUserRequestAPI(user['id']);
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                          ),
                         ),
                       );
                     },
                   );
                 } else {
                   throw Exception(
-                      'Falha na requisição com código de status: ${response.statusCode}');
+                    'Falha na requisição com código de status: ${response.statusCode}',
+                  );
                 }
               }
             },

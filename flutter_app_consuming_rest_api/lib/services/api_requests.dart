@@ -22,6 +22,7 @@ class ApiRequest {
 
     try {
       final url = Uri.parse(_basePathURL + pathName);
+
       final response = await http.get(url, headers: headerStrings);
 
       return response;
@@ -53,7 +54,9 @@ class ApiRequest {
   }
 
   Future<http.Response> patchDataByUserID(
-      String pathName, Map<String, dynamic> data) async {
+    String pathName,
+    Map<String, dynamic> data,
+  ) async {
     //////////////////////////////////////
 
     var headerStrings = {
@@ -67,6 +70,18 @@ class ApiRequest {
       final url = Uri.parse(_basePathURL + pathName);
       final response =
           await http.patch(url, headers: headerStrings, body: jsonEncode(data));
+
+      return response;
+    } catch (e) {
+      print('API Error: $e');
+      throw Exception('400 Bad Request');
+    }
+  }
+
+  Future<http.Response> deleteUserByID(String pathName) async {
+    try {
+      final url = Uri.parse(_basePathURL + pathName);
+      final response = await http.delete(url);
 
       return response;
     } catch (e) {
