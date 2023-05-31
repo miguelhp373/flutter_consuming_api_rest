@@ -18,7 +18,7 @@ This is a Flutter application that consumes a REST API to display and update use
 1. Clone this repository:
 
 ```
-git clone https://github.com/your-username/your-repository.git
+git clone https://github.com/miguelhp373/flutter_consuming_api_rest.git
 ```
 
 2. Navigate to the project directory:
