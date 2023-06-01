@@ -34,15 +34,11 @@ class _HomePageState extends State<HomePage>
   }
 
   void _handleTabChange() {
-    if (_tabController.index == 1) {
-      setState(() {
-        _isTabChanged = true;
-      });
-    } else {
-      setState(() {
-        _isTabChanged = false;
-      });
-    }
+    setState(
+      () => _tabController.index == 1
+          ? _isTabChanged = true
+          : _isTabChanged = false,
+    );
   }
 
   Future<void> _refreshData() async {
@@ -103,7 +99,13 @@ class _HomePageState extends State<HomePage>
       ),
       floatingActionButton: _isTabChanged
           ? FloatingActionButton(
-              onPressed: () {},
+              onPressed: () async {
+                await Navigator.pushNamed(
+                  context,
+                  '/user-details',
+                  arguments: '0',
+                );
+              },
               child: const Icon(Icons.add, color: Colors.white),
             )
           : null,

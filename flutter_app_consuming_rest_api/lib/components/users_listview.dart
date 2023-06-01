@@ -1,7 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app_consuming_rest_api/components/show_modal_boolean.dart';
 import 'package:flutter_app_consuming_rest_api/services/api_requests.dart';
@@ -47,9 +44,11 @@ class _UsersListviewState extends State<UsersListview> {
     bool? result = await completer.future;
 
     if (result) {
-      ApiRequest()
-          .deleteUserByID("/users/$userId")
-          .then((value) => {if (value.statusCode == 200) _refreshData()});
+      http.Response response =
+          await ApiRequest().deleteUserByID("/users/$userId");
+      if (response.statusCode == 200) {
+        _refreshData();
+      }
     }
   }
 
@@ -80,12 +79,13 @@ class _UsersListviewState extends State<UsersListview> {
                     itemBuilder: (context, index) {
                       var user = data[index];
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
+                        onTap: () async {
+                          await Navigator.pushNamed(
                             context,
                             '/user-details',
                             arguments: user['id'],
                           );
+                          _refreshData();
                         },
                         child: ListTile(
                           leading: CircleAvatar(

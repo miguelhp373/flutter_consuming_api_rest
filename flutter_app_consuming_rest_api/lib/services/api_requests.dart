@@ -53,6 +53,31 @@ class ApiRequest {
     }
   }
 
+  Future<http.Response> postDataByUserID(
+    String pathName,
+    Map<String, dynamic> data,
+  ) async {
+    //////////////////////////////////////
+
+    var headerStrings = {
+      "Access-Control-Allow-Origin": "*",
+      'Content-Type': 'application/json',
+      'Accept': '*/*'
+    };
+    //////////////////////////////////////
+
+    try {
+      final url = Uri.parse(_basePathURL + pathName);
+      final response =
+          await http.post(url, headers: headerStrings, body: jsonEncode(data));
+
+      return response;
+    } catch (e) {
+      print('API Error: $e');
+      throw Exception('400 Bad Request');
+    }
+  }
+
   Future<http.Response> patchDataByUserID(
     String pathName,
     Map<String, dynamic> data,

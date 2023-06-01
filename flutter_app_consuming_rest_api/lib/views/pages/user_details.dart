@@ -1,6 +1,7 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_consuming_rest_api/components/show_bottom_alert.dart';
 import 'package:flutter_app_consuming_rest_api/services/api_requests.dart';
 import 'dart:convert';
 
@@ -13,7 +14,7 @@ class UserDetails extends StatefulWidget {
 
 class _UserDetailsState extends State<UserDetails> {
   late String _userId;
-  TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   bool _isEditing = false;
   String _userImage = '';
 
@@ -26,7 +27,19 @@ class _UserDetailsState extends State<UserDetails> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     _userId = ModalRoute.of(context)!.settings.arguments as String;
+
+    if (_userId == '0') {
+      setState(() {
+        _isEditing = true;
+        _nameController.text = '';
+        _userImage =
+            'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg';
+      });
+
+      return;
+    }
     _fetchUserData();
   }
 
@@ -47,29 +60,39 @@ class _UserDetailsState extends State<UserDetails> {
         _nameController.text = userName;
         _userImage = userProfileImage;
       });
-    } else {
-      // Handle error
     }
   }
 
   void _editUser() {
-    setState(() {
-      _isEditing = true;
-    });
+    setState(() => _isEditing = true);
   }
 
   void _saveUser() async {
     final newName = _nameController.text;
-    final response = await ApiRequest()
-        .patchDataByUserID('/users/$_userId', {'name': newName});
-    if (response.statusCode == 200) {
-      print('Alterado com sucesso');
+
+    if (_userId == '0') {
+      final response = await ApiRequest().postDataByUserID(
+        '/users',
+        {'name': newName},
+      );
+      if (response.statusCode == 200) {
+        Navigator.of(context).pop();
+      } else {
+        ShowBottomAlert().showBottomAlert(
+            context, "Request Error - Cannot complete this operation.");
+      }
     } else {
-      print('Tente Novamente.');
+      final response = await ApiRequest().patchDataByUserID(
+        '/users/$_userId',
+        {'name': newName},
+      );
+      if (response.statusCode == 200) {
+        Navigator.of(context).pop();
+      } else {
+        ShowBottomAlert().showBottomAlert(
+            context, "Request Error - Cannot complete this operation.");
+      }
     }
-    setState(() {
-      _isEditing = false;
-    });
   }
 
   @override
@@ -107,7 +130,7 @@ class _UserDetailsState extends State<UserDetails> {
                       ),
                     ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _isEditing
                 ? ElevatedButton(
                     onPressed: _saveUser,
