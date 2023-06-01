@@ -1,51 +1,51 @@
 # Flutter Consuming REST API
 
-Este é um aplicativo Flutter que consome uma API REST para exibir e atualizar os detalhes de um usuário.
+This is a Flutter application that consumes a REST API to display and update user details.
 
-## Funcionalidades
+## Features
 
-- Exibe os detalhes do usuário, incluindo nome e imagem.
-- Permite editar o nome do usuário.
-- Salva as alterações do usuário na API REST.
+- Displays user details including name and image.
+- Allows editing the user's name.
+- Saves user changes to the REST API.
 
-## Pré-requisitos
+## Prerequisites
 
-- Flutter SDK instalado
-- Dispositivo ou emulador para executar o aplicativo
+- Flutter SDK installed
+- Device or emulator to run the application
 
-## Instalação
+## Installation
 
-1. Clone este repositório:
-
-```
-git clone https://github.com/seu-usuario/seu-repositorio.git
-```
-
-2. Navegue até o diretório do projeto:
+1. Clone this repository:
 
 ```
-cd seu-repositorio
+git clone https://github.com/miguelhp373/flutter_consuming_api_rest.git
 ```
 
-3. Execute o aplicativo:
+2. Navigate to the project directory:
+
+```
+cd your-repository
+```
+
+3. Run the application:
 
 ```
 flutter run
 ```
 
-## Configuração da API
+## API Configuration
 
-A aplicação consome uma API REST para obter e atualizar os detalhes do usuário. Certifique-se de configurar corretamente a URL da API no arquivo `.env` do projeto.
+The application consumes a REST API to fetch and update user details. Make sure to properly configure the API URL in the project's `.env` file.
 
-## Bibliotecas Utilizadas
+## Used Libraries
 
-- http: ^0.13.4: para realizar as requisições HTTP à API REST.
-- flutter_dotenv: ^5.0.1: para carregar as variáveis de ambiente do arquivo `.env`.
+- http: ^0.13.4: to perform HTTP requests to the REST API.
+- flutter_dotenv: ^5.0.1: to load environment variables from the `.env` file.
 
-## Contribuição
+## Contribution
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
+Contributions are welcome! Feel free to open an issue or submit a pull request.
 
-## Licença
+## License
 
-Este projeto está licenciado sob a [MIT License](https://opensource.org/licenses/MIT).
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
